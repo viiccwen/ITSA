@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./jquery.js"></script>
+    <script src="./bootstrap.js"></script>
+    <script src="./script.js"></script>
+    <link rel="stylesheet" href="./bootstrap.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>計時器</title>
+  </head>
+  <body>
+    <div class="text-align-center">
+      <h1 class="my-3">計時器</h1>
+      <h2 class="my-3 clockText">00:00:00</h2>
+      <div>
+        <span>設定目標及時間</span>
+        <input type="datetime-local" class="clock" />
+        <button class="btn btn-primary" data-target="1" onclick="start(event)">
+          開始
+        </button>
+        <button class="btn btn-danger" onclick="reset()">重置</button>
+      </div>
+    </div>
+  </body>
+  <script>
+    const d = document;
+    var time;
+
+    function start(e) {
+      var et = e.target;
+      var func = et.getAttribute("data-target");
+
+      if (func == 1) {
+        var clock = d.querySelector(".clock");
+        var nowTime = new Date();
+
+        if (clock == "" || clock.value < nowTime) {
+          alert("請輸入正確時間");
+          return;
+        }
+
+        et.setAttribute("data-target", "2");
+        et.innerHTML = "暫停";
+
+        var targetTime = new Date(clock.value);
+
+        time = setInterval(function () {
+          nowTime = new Date();
+
+          if (nowTime >= targetTime) {
+            alert("時間到");
+            clearInterval(time);
+            location.reload();
+            return;
+          }
+
+          var diff = targetTime - nowTime;
+          var h = Math.floor(diff / 1000 / 60 / 60);
+          var m = Math.floor(diff / 1000 / 60) % 60;
+          var s = Math.floor(diff / 1000) % 60;
+          var timeStr =
+            (h >= 10 ? h : "0" + h) +
+            ":" +
+            (m >= 10 ? m : "0" + m) +
+            ":" +
+            (s >= 10 ? s : "0" + s);
+          d.querySelector(".clockText").innerHTML = timeStr;
+        }, 1000);
+      } else if (func == 2) {
+        et.setAttribute("data-target", "1");
+        et.innerHTML = "繼續";
+        clearInterval(time);
+      }
+    }
+
+    function reset() {
+      location.reload();
+    }
+  </script>
+</html>
