@@ -1,0 +1,13 @@
+.text-align-center {
+    text-align: center;
+}
+
+.nonfinishDiv {
+    border: 5px solid red;
+    height: 100vh;
+}
+
+.finishDiv {
+    border: 5px solid blue;
+    height: 100vh;
+}
